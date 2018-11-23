@@ -1,15 +1,24 @@
 const shapefile = require('shapefile')
+const config = require('config')
+const fs = require('fs')
 
 if (process.argv.length != 3) {
   console.log('usage node index.js somewhere/shapefile.shp')
   process.exit()
 }
 
+const encoding = path => {
+  if (fs.existsSync(path)) {
+    return fs.readFileSync(path)
+  } else {
+    return 'Windows-31J'
+  }
+}
+
 shapefile.open(
   process.argv[2], 
   process.argv[2].replace('shp', 'dbf'),
-//  { encoding: 'UTF-8' }
-  { encoding: 'Windows-31J' }
+  { encoding: encoding(process.argv[2].replace('shp', 'cpg')) }
 )
   .then(source => source.read()
     .then(function log(result) {
@@ -25,4 +34,4 @@ shapefile.open(
     }))
   .catch(error => console.error(error.stack))
 
-
+console.error(`finished ${process.argv[2]}.`)
