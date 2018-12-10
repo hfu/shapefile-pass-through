@@ -2,8 +2,8 @@ const shapefile = require('shapefile')
 const config = require('config')
 const fs = require('fs')
 
-if (process.argv.length != 3) {
-  console.log('usage node index.js somewhere/shapefile.shp')
+if (process.argv.length != 4) {
+  console.log('usage node index.js somewhere/shapefile.shp src_id')
   process.exit()
 }
 
@@ -29,7 +29,8 @@ shapefile.open(
           f.properties[key] = f.properties[key].replace(/\0/g, '').trim() || null
         }
       }
-      console.log(JSON.stringify(result.value))
+      f.properties._src = process.argv[3]
+      console.log(JSON.stringify(f))
       return source.read().then(log)
     }))
   .catch(error => console.error(error.stack))

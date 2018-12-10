@@ -1,5 +1,6 @@
 *.ndjson
 *.ndjson.gz
+*.ndjson.bz2
 
 # Logs
 logs
